@@ -17,12 +17,18 @@ const TABS = [
 function App() {
   const profiles = profilesData.profiles;
   const [tab, setTab] = useState("inicio");
-  const [selectedIds, setSelectedIds] = useState(profiles.map((p) => p.id));
-  const [editingId, setEditingId] = useState(profiles[0]?.id ?? "");
+  const [selectedIds, setSelectedIds] = useState([]);
+  const [editingId, setEditingId] = useState("");
   const editingProfile = profiles.find((p) => p.id === editingId) ?? null;
 
   function toggle(id) {
     setSelectedIds((prev) => (prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]));
+  }
+
+  function openTab(next) {
+    if (next === "comparar") setSelectedIds([]);
+    if (next === "editar") setEditingId("");
+    setTab(next);
   }
 
   function viewInCompare(id) {
@@ -56,7 +62,7 @@ function App() {
               <button
                 key={t.id}
                 type="button"
-                onClick={() => setTab(t.id)}
+                onClick={() => openTab(t.id)}
                 className={`inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium border ${
                   active
                     ? "bg-slate-900 text-white border-slate-900"
@@ -71,7 +77,7 @@ function App() {
         </nav>
 
         {tab === "inicio" && (
-          <HelpGuide onGoCreate={() => setTab("crear")} onGoEdit={() => setTab("editar")} />
+          <HelpGuide onGoCreate={() => setTab("crear")} onGoEdit={() => openTab("editar")} />
         )}
         {tab === "comparar" && (
           <CompareView
