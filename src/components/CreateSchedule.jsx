@@ -6,10 +6,11 @@ import {
   PROFILE_PALETTE,
   buildExportProfile,
   flattenProfileToSessions,
+  profileToDraft,
   slugify,
   validateProfile,
 } from "../lib/profile.js";
-import { DAY_LABELS, DAY_ORDER } from "../lib/time.js";
+import { DAY_LABELS, DAY_ORDER, isValidClock, normalizeTime } from "../lib/time.js";
 import WeekGrid from "./WeekGrid.jsx";
 
 function emptyMateria() {
@@ -34,19 +35,35 @@ const TIME_OPTIONS = [
   "15:15", "16:00", "16:50", "17:00", "17:50", "18:50", "19:00", "20:50", "21:00",
 ];
 
-export default function CreateSchedule({ existingIds }) {
-  const [displayName, setDisplayName] = useState("");
-  const [idTouched, setIdTouched] = useState(false);
-  const [id, setId] = useState("");
-  const [color, setColor] = useState(PROFILE_PALETTE[0]);
-  const [materias, setMaterias] = useState([emptyMateria()]);
+export default function CreateSchedule({ existingIds, initialProfile = null }) {
+  const isEdit = Boolean(initialProfile);
+  const draft = initialProfile ? profileToDraft(initialProfile) : null;
+  const [displayName, setDisplayName] = useState(draft?.displayName ?? "");
+  const [idTouched, setIdTouched] = useState(isEdit);
+  const [id, setId] = useState(draft?.id ?? "");
+  const [color, setColor] = useState(draft?.color ?? PROFILE_PALETTE[0]);
+  const [materias, setMaterias] = useState(draft?.materias ?? [emptyMateria()]);
   const [copied, setCopied] = useState(false);
 
   const suggestedId = slugify(displayName);
   const effectiveId = idTouched ? id : suggestedId;
 
   const exported = buildExportProfile({ displayName, id: effectiveId, color, materias });
-  const errors = validateProfile(exported, existingIds);
+  const takenIds = existingIds.filter((value) => value !== initialProfile?.id);
+  const timeErrors = materias.flatMap((m, i) => {
+    const label = m.name.trim() || `Materia ${i + 1}`;
+    return m.schedules.flatMap((s, j) => {
+      const msgs = [];
+      if (!isValidClock(s.start) || !isValidClock(s.end)) {
+        msgs.push(`${label}, bloque ${j + 1}: usa hora HH:MM (ej. 09:30, no 9:30).`);
+      } else if (s.end <= s.start) {
+        msgs.push(`${label}, bloque ${j + 1}: la hora de fin debe ser mayor que la de inicio.`);
+      }
+      return msgs;
+    });
+  });
+  const errors = [...validateProfile(exported, takenIds), ...timeErrors];
+  const uniqueErrors = [...new Set(errors)];
   const previewSessions = flattenProfileToSessions(exported);
   const conflicts = findConflicts(previewSessions);
   const jsonText = JSON.stringify(exported, null, 2);
@@ -70,7 +87,9 @@ export default function CreateSchedule({ existingIds }) {
   return (
     <div className="space-y-6">
       <p className="text-sm text-slate-600">
-        Crea tu horario, revisa el JSON y envíaselo a Samuel para que lo agregue al sitio.
+        {isEdit
+          ? `Edita el horario de ${initialProfile.displayName}, copia el JSON y envíaselo a Samuel para que reemplace el objeto con id "${initialProfile.id}".`
+          : "Crea tu horario, revisa el JSON y envíaselo a Samuel para que lo agregue al sitio."}
       </p>
 
       <section className="bg-white border border-slate-200 rounded-xl p-4 space-y-3">
@@ -192,7 +211,9 @@ export default function CreateSchedule({ existingIds }) {
             </div>
 
             <div className="space-y-2">
-              <p className="text-xs font-medium text-slate-500 uppercase tracking-wide">Horarios</p>
+              <p className="text-xs font-medium text-slate-500 uppercase tracking-wide">
+                Horarios · 24h HH:MM (07:30, 13:00)
+              </p>
               {m.schedules.map((s) => (
                 <div key={s.key} className="grid grid-cols-2 sm:grid-cols-5 gap-2 items-end">
                   <label className="text-xs text-slate-600">
@@ -219,6 +240,8 @@ export default function CreateSchedule({ existingIds }) {
                     Inicio
                     <input
                       list="time-options"
+                      inputMode="numeric"
+                      placeholder="07:30"
                       value={s.start}
                       onChange={(e) =>
                         updateMateria(m.key, {
@@ -227,13 +250,24 @@ export default function CreateSchedule({ existingIds }) {
                           ),
                         })
                       }
-                      className="mt-1 w-full border border-slate-300 rounded-lg px-2 py-2 text-sm"
+                      onBlur={(e) =>
+                        updateMateria(m.key, {
+                          schedules: m.schedules.map((row) =>
+                            row.key === s.key ? { ...row, start: normalizeTime(e.target.value) } : row,
+                          ),
+                        })
+                      }
+                      className={`mt-1 w-full border rounded-lg px-2 py-2 text-sm ${
+                        isValidClock(s.start) ? "border-slate-300" : "border-red-400 bg-red-50"
+                      }`}
                     />
                   </label>
                   <label className="text-xs text-slate-600">
                     Fin
                     <input
                       list="time-options"
+                      inputMode="numeric"
+                      placeholder="09:20"
                       value={s.end}
                       onChange={(e) =>
                         updateMateria(m.key, {
@@ -242,7 +276,16 @@ export default function CreateSchedule({ existingIds }) {
                           ),
                         })
                       }
-                      className="mt-1 w-full border border-slate-300 rounded-lg px-2 py-2 text-sm"
+                      onBlur={(e) =>
+                        updateMateria(m.key, {
+                          schedules: m.schedules.map((row) =>
+                            row.key === s.key ? { ...row, end: normalizeTime(e.target.value) } : row,
+                          ),
+                        })
+                      }
+                      className={`mt-1 w-full border rounded-lg px-2 py-2 text-sm ${
+                        isValidClock(s.end) ? "border-slate-300" : "border-red-400 bg-red-50"
+                      }`}
                     />
                   </label>
                   <label className="text-xs text-slate-600">
@@ -302,9 +345,9 @@ export default function CreateSchedule({ existingIds }) {
 
       <section className="space-y-3">
         <h3 className="font-semibold text-slate-800">3. Revisar y copiar</h3>
-        {errors.length > 0 && (
+        {uniqueErrors.length > 0 && (
           <ul className="bg-amber-50 border border-amber-200 rounded-lg p-3 text-sm text-amber-800 space-y-1">
-            {errors.map((e) => (
+            {uniqueErrors.map((e) => (
               <li key={e}>{e}</li>
             ))}
           </ul>
@@ -321,7 +364,7 @@ export default function CreateSchedule({ existingIds }) {
         <div className="flex flex-wrap items-center gap-3">
           <button
             type="button"
-            disabled={errors.length > 0}
+            disabled={uniqueErrors.length > 0}
             onClick={copyJson}
             className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-slate-900 text-white disabled:opacity-40 hover:bg-slate-700"
           >
@@ -329,7 +372,9 @@ export default function CreateSchedule({ existingIds }) {
             {copied ? "Copiado" : "Copiar JSON"}
           </button>
           <p className="text-sm text-slate-500">
-            Envía este JSON a Samuel para que lo agregue a <code>data/profiles.json</code>.
+            {isEdit
+              ? "Reemplaza el perfil con el mismo id en data/profiles.json."
+              : "Envía este JSON a Samuel para que lo agregue a data/profiles.json."}
           </p>
         </div>
       </section>

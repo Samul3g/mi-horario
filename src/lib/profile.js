@@ -1,4 +1,4 @@
-import { DAY_ORDER, toMin } from "./time.js";
+import { DAY_ORDER, isValidClock, normalizeTime, toMin } from "./time.js";
 
 export const COURSE_COLORS = {
   IC2001: { bg: "#dbeafe", border: "#2563eb", text: "#1e3a8a" },
@@ -95,7 +95,7 @@ export function buildExportProfile(draft) {
           .map((t) => t.trim())
           .filter(Boolean),
         schedules: (m.schedules ?? []).map((s) => {
-          const row = { day: s.day, start: s.start, end: s.end };
+          const row = { day: s.day, start: normalizeTime(s.start), end: normalizeTime(s.end) };
           if (s.room?.trim()) row.room = s.room.trim();
           return row;
         }),
@@ -109,6 +109,46 @@ export function buildExportProfile(draft) {
       }
       return materia;
     }),
+  };
+}
+
+export function profileToDraft(profile) {
+  const materias = (profile.materias ?? []).map((m) => ({
+    key: crypto.randomUUID(),
+    name: m.name ?? "",
+    code: m.code ?? "",
+    group: m.group ?? "",
+    credits: m.credits ?? "",
+    teachersText: (m.teachers ?? []).join(", "),
+    schedules: (m.schedules ?? []).length
+      ? m.schedules.map((s) => ({
+          key: crypto.randomUUID(),
+          day: s.day,
+          start: s.start,
+          end: s.end,
+          room: s.room ?? "",
+        }))
+      : [
+          { key: crypto.randomUUID(), day: "Lun", start: "07:30", end: "09:20", room: "" },
+        ],
+  }));
+  return {
+    displayName: profile.displayName ?? "",
+    id: profile.id ?? "",
+    color: profile.color ?? PROFILE_PALETTE[0],
+    materias: materias.length
+      ? materias
+      : [
+          {
+            key: crypto.randomUUID(),
+            name: "",
+            code: "",
+            group: "",
+            credits: "",
+            teachersText: "",
+            schedules: [{ key: crypto.randomUUID(), day: "Lun", start: "07:30", end: "09:20", room: "" }],
+          },
+        ],
   };
 }
 
@@ -129,11 +169,9 @@ export function validateProfile(profile, existingIds = []) {
     if (!m.schedules?.length) errors.push(`${label}: agrega al menos un horario.`);
     (m.schedules ?? []).forEach((s, j) => {
       if (!DAY_ORDER.includes(s.day)) errors.push(`${label}, bloque ${j + 1}: día inválido.`);
-      const st = toMin(s.start);
-      const en = toMin(s.end);
-      if (!Number.isFinite(st) || !Number.isFinite(en)) {
-        errors.push(`${label}, bloque ${j + 1}: hora inválida.`);
-      } else if (en <= st) {
+      if (!isValidClock(s.start) || !isValidClock(s.end)) {
+        errors.push(`${label}, bloque ${j + 1}: usa hora HH:MM (ej. 09:30, no 9:30).`);
+      } else if (toMin(s.end) <= toMin(s.start)) {
         errors.push(`${label}, bloque ${j + 1}: la hora de fin debe ser mayor que la de inicio.`);
       }
     });

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { CalendarDays, GraduationCap, Plus, Users } from "lucide-react";
+import { CalendarDays, GraduationCap, Pencil, Plus, Users } from "lucide-react";
 import profilesData from "../data/profiles.json";
 import CompareView from "./components/CompareView.jsx";
 import CreateSchedule from "./components/CreateSchedule.jsx";
@@ -9,12 +9,15 @@ const TABS = [
   { id: "comparar", label: "Comparar", icon: CalendarDays },
   { id: "personas", label: "Personas", icon: Users },
   { id: "crear", label: "Crear horario", icon: Plus },
+  { id: "editar", label: "Editar horario", icon: Pencil },
 ];
 
 function App() {
   const profiles = profilesData.profiles;
   const [tab, setTab] = useState("comparar");
   const [selectedIds, setSelectedIds] = useState(profiles.map((p) => p.id));
+  const [editingId, setEditingId] = useState(profiles[0]?.id ?? "");
+  const editingProfile = profiles.find((p) => p.id === editingId) ?? null;
 
   function toggle(id) {
     setSelectedIds((prev) => (prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]));
@@ -23,6 +26,11 @@ function App() {
   function viewInCompare(id) {
     setSelectedIds([id]);
     setTab("comparar");
+  }
+
+  function editProfile(id) {
+    setEditingId(id);
+    setTab("editar");
   }
 
   return (
@@ -67,8 +75,40 @@ function App() {
             onClear={() => setSelectedIds([])}
           />
         )}
-        {tab === "personas" && <ProfileList profiles={profiles} onViewInCompare={viewInCompare} />}
+        {tab === "personas" && (
+          <ProfileList profiles={profiles} onViewInCompare={viewInCompare} onEdit={editProfile} />
+        )}
         {tab === "crear" && <CreateSchedule existingIds={profiles.map((p) => p.id)} />}
+        {tab === "editar" && (
+          <div className="space-y-4">
+            <div className="flex flex-wrap gap-2">
+              {profiles.map((p) => (
+                <button
+                  key={p.id}
+                  type="button"
+                  onClick={() => setEditingId(p.id)}
+                  className={`px-3 py-1.5 rounded-lg text-sm font-medium border ${
+                    editingId === p.id
+                      ? "text-white border-transparent"
+                      : "bg-white text-slate-600 border-slate-300 hover:bg-slate-100"
+                  }`}
+                  style={editingId === p.id ? { background: p.color, borderColor: p.color } : undefined}
+                >
+                  {p.displayName}
+                </button>
+              ))}
+            </div>
+            {editingProfile ? (
+              <CreateSchedule
+                key={editingProfile.id}
+                initialProfile={editingProfile}
+                existingIds={profiles.map((p) => p.id)}
+              />
+            ) : (
+              <p className="text-sm text-slate-500">Elige a alguien para editar su horario.</p>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );

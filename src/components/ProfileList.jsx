@@ -1,7 +1,7 @@
 import { flattenProfileToSessions, weeklyHours } from "../lib/profile.js";
 import { DAY_LABELS } from "../lib/time.js";
 
-export default function ProfileList({ profiles, onViewInCompare }) {
+export default function ProfileList({ profiles, onViewInCompare, onEdit }) {
   return (
     <div className="grid gap-3 md:grid-cols-2">
       {profiles.map((p) => {
@@ -19,13 +19,22 @@ export default function ProfileList({ profiles, onViewInCompare }) {
                   </p>
                 </div>
               </div>
-              <button
-                type="button"
-                onClick={() => onViewInCompare(p.id)}
-                className="text-sm px-3 py-1.5 rounded-lg bg-slate-900 text-white hover:bg-slate-700"
-              >
-                Ver en comparador
-              </button>
+              <div className="flex flex-wrap gap-2 justify-end">
+                <button
+                  type="button"
+                  onClick={() => onEdit(p.id)}
+                  className="text-sm px-3 py-1.5 rounded-lg border border-slate-300 bg-white text-slate-700 hover:bg-slate-100"
+                >
+                  Editar
+                </button>
+                <button
+                  type="button"
+                  onClick={() => onViewInCompare(p.id)}
+                  className="text-sm px-3 py-1.5 rounded-lg bg-slate-900 text-white hover:bg-slate-700"
+                >
+                  Ver en comparador
+                </button>
+              </div>
             </div>
             <ul className="space-y-2">
               {p.materias.map((m) => (
