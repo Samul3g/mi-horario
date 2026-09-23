@@ -248,5 +248,115 @@
         }
       ]
     }
+    ,{
+      "id": "aldden-portuguez",
+      "displayName": "Aldden Portuguez",
+      "color": "#0d9488",
+      "materias": [
+        {
+          "name": "Matematica General",
+          "teachers": [
+            "Juan Pablo Prendas"
+          ],
+          "schedules": [
+            {
+              "day": "Mie",
+              "start": "16:00",
+              "end": "18:50",
+              "room": "F4-09"
+            },
+            {
+              "day": "Vie",
+              "start": "17:00",
+              "end": "18:50",
+              "room": "F4-09"
+            }
+          ],
+          "code": "MA0101",
+          "group": 11,
+          "credits": 2
+        },
+        {
+          "name": "Fundamentos de Organización de Computadoras",
+          "teachers": [
+            "Jorge Calvo"
+          ],
+          "schedules": [
+            {
+              "day": "Mar",
+              "start": "13:00",
+              "end": "14:50",
+              "room": "B3-08"
+            },
+            {
+              "day": "Jue",
+              "start": "13:00",
+              "end": "14:50",
+              "room": "B3-08"
+            }
+          ],
+          "code": "IC1400",
+          "group": 3,
+          "credits": 3
+        },
+        {
+          "name": "Inglés II",
+          "teachers": [
+            "Esteban Fuentes"
+          ],
+          "schedules": [
+            {
+              "day": "Mie",
+              "start": "13:00",
+              "end": "15:50",
+              "room": "F9-08"
+            }
+          ],
+          "code": "CI1231",
+          "group": 11,
+          "credits": 2
+        },
+        {
+          "name": "Estructuras de Datos",
+          "teachers": [
+            "Ivannia Cerdas"
+          ],
+          "schedules": [
+            {
+              "day": "Mar",
+              "start": "15:00",
+              "end": "16:50",
+              "room": "B3-06"
+            },
+            {
+              "day": "Jue",
+              "start": "15:00",
+              "end": "16:50",
+              "room": "Virtual"
+            }
+          ],
+          "code": "IC2001",
+          "group": 1,
+          "credits": 4
+        },
+        {
+          "name": "Seminarios de Estudios Filosoficos Historicos",
+          "teachers": [
+            "Maria Elena Leon"
+          ],
+          "schedules": [
+            {
+              "day": "Jue",
+              "start": "9:30",
+              "end": "12:20",
+              "room": "B2-03"
+            }
+          ],
+          "code": "CS3401",
+          "group": 5,
+          "credits": 2
+        }
+      ]
+    }
   ]
 }
