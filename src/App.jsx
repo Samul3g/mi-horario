@@ -1,20 +1,22 @@
 import { useState } from "react";
-import { CalendarDays, GraduationCap, Pencil, Plus, Users } from "lucide-react";
+import { CalendarDays, CircleHelp, GraduationCap, Pencil, Plus, Users } from "lucide-react";
 import profilesData from "../data/profiles.json";
 import CompareView from "./components/CompareView.jsx";
 import CreateSchedule from "./components/CreateSchedule.jsx";
+import HelpGuide from "./components/HelpGuide.jsx";
 import ProfileList from "./components/ProfileList.jsx";
 
 const TABS = [
-  { id: "comparar", label: "Comparar", icon: CalendarDays },
-  { id: "personas", label: "Personas", icon: Users },
+  { id: "inicio", label: "Cómo usar", icon: CircleHelp },
   { id: "crear", label: "Crear horario", icon: Plus },
   { id: "editar", label: "Editar horario", icon: Pencil },
+  { id: "comparar", label: "Comparar", icon: CalendarDays },
+  { id: "personas", label: "Personas", icon: Users },
 ];
 
 function App() {
   const profiles = profilesData.profiles;
-  const [tab, setTab] = useState("comparar");
+  const [tab, setTab] = useState("inicio");
   const [selectedIds, setSelectedIds] = useState(profiles.map((p) => p.id));
   const [editingId, setEditingId] = useState(profiles[0]?.id ?? "");
   const editingProfile = profiles.find((p) => p.id === editingId) ?? null;
@@ -41,7 +43,9 @@ function App() {
             <GraduationCap className="w-6 h-6 text-slate-700" />
             <h1 className="text-xl font-bold text-slate-800">Comparador de horarios · II Semestre 2026</h1>
           </div>
-          <p className="text-sm text-slate-500">TEC, Sede Cartago · elige 1, 2, 3 o todos para ver cuándo están libres</p>
+          <p className="text-sm text-slate-500">
+            TEC, Sede Cartago · crea o edita tu horario y envía el JSON a Samuel
+          </p>
         </header>
 
         <nav className="flex flex-wrap gap-2 mb-5">
@@ -66,6 +70,9 @@ function App() {
           })}
         </nav>
 
+        {tab === "inicio" && (
+          <HelpGuide onGoCreate={() => setTab("crear")} onGoEdit={() => setTab("editar")} />
+        )}
         {tab === "comparar" && (
           <CompareView
             profiles={profiles}
