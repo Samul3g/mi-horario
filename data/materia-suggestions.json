@@ -1,0 +1,15 @@
+{
+  "materias": [
+    { "code": "IC2001", "name": "Estructuras de datos" },
+    { "code": "MA1102", "name": "Cálculo diferencial e integral" },
+    { "code": "IC2101", "name": "Programación orientada a objetos" },
+    { "code": "IC3101", "name": "Arquitectura de computadores" },
+    { "code": "CI1107", "name": "Comunicación oral" },
+    { "code": "SE1205", "name": "Juegos y deportes en conjunto" },
+    { "code": "IC1400", "name": "Fundamentos de organización de computadoras" },
+    { "name": "Inglés I" },
+    { "name": "Inglés básico" },
+    { "name": "Atletismo" },
+    { "name": "Baloncesto recreativo" }
+  ]
+}

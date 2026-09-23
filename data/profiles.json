@@ -1,0 +1,252 @@
+{
+  "profiles": [
+    {
+      "id": "paula-flores",
+      "displayName": "Paula Flores",
+      "color": "#db2777",
+      "materias": [
+        {
+          "code": "IC2001",
+          "name": "Estructuras de datos",
+          "group": 4,
+          "teachers": [],
+          "schedules": [
+            { "day": "Mar", "start": "07:30", "end": "09:20", "room": "B3-07" },
+            { "day": "Jue", "start": "07:30", "end": "09:20", "room": "B3-07" }
+          ]
+        },
+        {
+          "code": "MA1102",
+          "name": "Cálculo diferencial e integral",
+          "group": 3,
+          "teachers": [],
+          "schedules": [
+            { "day": "Mar", "start": "09:30", "end": "11:20", "room": "D3-12" },
+            { "day": "Jue", "start": "09:30", "end": "12:20", "room": "D3-12" }
+          ]
+        },
+        {
+          "code": "IC2101",
+          "name": "Programación orientada a objetos",
+          "group": 1,
+          "teachers": [],
+          "schedules": [
+            { "day": "Mar", "start": "13:00", "end": "14:50", "room": "B3-01" },
+            { "day": "Jue", "start": "13:00", "end": "14:50", "room": "B3-01" }
+          ]
+        },
+        {
+          "name": "Atletismo",
+          "teachers": [],
+          "schedules": [
+            { "day": "Mie", "start": "07:30", "end": "09:20", "room": "ND-0" }
+          ]
+        },
+        {
+          "code": "IC3101",
+          "name": "Arquitectura de computadores",
+          "group": 4,
+          "teachers": [],
+          "schedules": [
+            { "day": "Mie", "start": "13:00", "end": "14:50", "room": "B3-08" },
+            { "day": "Vie", "start": "13:00", "end": "14:50", "room": "B3-08" }
+          ]
+        },
+        {
+          "code": "CI1107",
+          "name": "Comunicación oral",
+          "teachers": [],
+          "schedules": [
+            { "day": "Vie", "start": "09:30", "end": "12:20", "room": "F9-05" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "samuel",
+      "displayName": "Samuel",
+      "color": "#2563eb",
+      "materias": [
+        {
+          "code": "IC2001",
+          "name": "Estructuras de datos",
+          "group": 4,
+          "teachers": [],
+          "schedules": [
+            { "day": "Mar", "start": "07:30", "end": "09:20", "room": "B3-07" },
+            { "day": "Jue", "start": "07:30", "end": "09:20", "room": "B3-07" }
+          ]
+        },
+        {
+          "code": "MA1102",
+          "name": "Cálculo diferencial e integral",
+          "group": 3,
+          "teachers": [],
+          "schedules": [
+            { "day": "Mar", "start": "09:30", "end": "11:20", "room": "D3-12" },
+            { "day": "Jue", "start": "09:30", "end": "12:20", "room": "D3-12" }
+          ]
+        },
+        {
+          "code": "SE1205",
+          "name": "Juegos y deportes en conjunto",
+          "teachers": [],
+          "schedules": [
+            { "day": "Mie", "start": "07:30", "end": "09:20", "room": "ND-0" }
+          ]
+        },
+        {
+          "code": "IC3101",
+          "name": "Arquitectura de computadores",
+          "group": 4,
+          "teachers": [],
+          "schedules": [
+            { "day": "Mie", "start": "13:00", "end": "14:50", "room": "B3-08" },
+            { "day": "Vie", "start": "13:00", "end": "14:50", "room": "B3-08" }
+          ]
+        },
+        {
+          "code": "IC2101",
+          "name": "Programación orientada a objetos",
+          "teachers": [],
+          "schedules": [
+            { "day": "Mie", "start": "17:00", "end": "20:50", "room": "ND-0" }
+          ]
+        },
+        {
+          "code": "CI1107",
+          "name": "Comunicación oral",
+          "teachers": [],
+          "schedules": [
+            { "day": "Vie", "start": "07:30", "end": "10:20", "room": "F9-04" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "jeikel",
+      "displayName": "Jeikel",
+      "color": "#16a34a",
+      "materias": [
+        {
+          "code": "IC2001",
+          "name": "Estructuras de datos",
+          "group": 4,
+          "teachers": ["Sanabria Rodríguez Aurelio"],
+          "schedules": [
+            { "day": "Mar", "start": "07:30", "end": "09:20", "room": "B3-07" },
+            { "day": "Jue", "start": "07:30", "end": "09:20", "room": "B3-07" }
+          ]
+        },
+        {
+          "code": "MA1102",
+          "name": "Cálculo diferencial e integral",
+          "group": 3,
+          "teachers": ["Masis Flores David"],
+          "schedules": [
+            { "day": "Mar", "start": "09:30", "end": "11:20", "room": "D3-12" },
+            { "day": "Jue", "start": "09:30", "end": "12:20", "room": "D3-12" }
+          ]
+        },
+        {
+          "code": "IC2101",
+          "name": "Programación orientada a objetos",
+          "group": 3,
+          "teachers": ["Mora Rojas Diego"],
+          "schedules": [
+            { "day": "Mar", "start": "13:00", "end": "14:50", "room": "B3-01" },
+            { "day": "Jue", "start": "13:00", "end": "14:50", "room": "B3-01" }
+          ]
+        },
+        {
+          "name": "Baloncesto recreativo",
+          "group": 2,
+          "teachers": ["Marín Vargas Fabián"],
+          "schedules": [
+            { "day": "Mar", "start": "15:00", "end": "16:50", "room": "N/A" }
+          ]
+        },
+        {
+          "name": "Inglés I",
+          "group": 7,
+          "teachers": ["Ramírez Castillo Monserrat"],
+          "schedules": [
+            { "day": "Mie", "start": "09:30", "end": "12:20", "room": "F9-06" }
+          ]
+        },
+        {
+          "code": "IC3101",
+          "name": "Arquitectura de computadores",
+          "group": 4,
+          "teachers": ["Vargas Calvo Jorge"],
+          "schedules": [
+            { "day": "Mie", "start": "13:00", "end": "14:50", "room": "B3-08" },
+            { "day": "Vie", "start": "13:00", "end": "14:50", "room": "B3-08" }
+          ]
+        },
+        {
+          "code": "CI1107",
+          "name": "Comunicación oral",
+          "group": 28,
+          "teachers": ["Amador Solano Gabriela"],
+          "schedules": [
+            { "day": "Vie", "start": "09:30", "end": "12:20", "room": "F9-05" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "paula-monge",
+      "displayName": "Paula Monge",
+      "color": "#7c3aed",
+      "materias": [
+        {
+          "code": "MA1102",
+          "name": "Cálculo diferencial e integral",
+          "group": 1,
+          "teachers": ["Quesada Villalobos Lourdes"],
+          "schedules": [
+            { "day": "Mar", "start": "07:30", "end": "10:20", "room": "G18-01" },
+            { "day": "Jue", "start": "07:30", "end": "09:20", "room": "G18-01" }
+          ]
+        },
+        {
+          "code": "IC2001",
+          "name": "Estructuras de datos",
+          "group": 1,
+          "teachers": ["Cerda Quesada Iván"],
+          "schedules": [
+            { "day": "Mar", "start": "17:00", "end": "18:50", "room": "B3-06" },
+            { "day": "Jue", "start": "17:00", "end": "18:50", "room": "B3-06" }
+          ]
+        },
+        {
+          "name": "Inglés básico",
+          "group": 3,
+          "teachers": ["Valle Alfaro Johan"],
+          "schedules": [
+            { "day": "Mie", "start": "13:00", "end": "15:15", "room": "F9-03" }
+          ]
+        },
+        {
+          "code": "IC2101",
+          "name": "Programación orientada a objetos",
+          "group": 2,
+          "teachers": ["Solano Fernández Eric"],
+          "schedules": [
+            { "day": "Mie", "start": "17:00", "end": "20:50", "room": "N/A" }
+          ]
+        },
+        {
+          "code": "CI1107",
+          "name": "Comunicación oral",
+          "group": 27,
+          "teachers": ["Mora García Sarah"],
+          "schedules": [
+            { "day": "Vie", "start": "07:30", "end": "10:20", "room": "F9-04" }
+          ]
+        }
+      ]
+    }
+  ]
+}
